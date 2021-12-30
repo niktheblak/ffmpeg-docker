@@ -5,4 +5,5 @@ RUN apt update \
   && rm -r /var/cache/apt/
 
 VOLUME /output
+WORKDIR /output
 ENTRYPOINT ["/usr/bin/ffmpeg"]

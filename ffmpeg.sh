@@ -3,6 +3,6 @@
 docker run \
   -it \
   --rm \
-  -v $PWD/output:/output \
+  -v $PWD:/output \
   ffmpeg:latest \
   "$@"
