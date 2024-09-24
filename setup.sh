@@ -1,19 +1,34 @@
 #!/usr/bin/env bash
 
 if [[ -z "$FFMPEG_VERSION" ]]; then
-  FFMPEG_VERSION=6.0.1
+  FFMPEG_VERSION=7.0.2
 fi
 
 set -e
 
-export DEBIAN_FRONTEND=noninteractive
+tee -a /etc/apt/sources.list.d/ubuntu-src.sources <<EOF
 
-apt update
-apt-get -yq install build-essential curl gnupg unzip bzip2 nasm \
-  libfdk-aac-dev gpac libavcodec58 libavdevice58 libavfilter7 libavformat58 \
-  libavutil56 libc6 libpostproc55 libsdl2-2.0-0 libswresample3 libswscale5 \
-  libx265-dev libx264-dev libaom-dev libvorbis-dev libmp3lame-dev \
-  libsvtav1-dev libsvtav1dec-dev libsvtav1enc-dev
+Types: deb-src
+URIs: http://ports.ubuntu.com/ubuntu-ports/
+Suites: noble noble-updates noble-backports
+Components: main universe restricted multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+EOF
+
+apt-get update
+apt-get -y build-dep ffmpeg
+DEBIAN_FRONTEND=noninteractive apt-get -y install \
+  curl \
+  ca-certificates \
+  gnupg \
+  libsvtav1-dev \
+  libsvtav1dec-dev \
+  libsvtav1enc-dev \
+  libfdk-aac-dev \
+  libx265-dev \
+  libx264-dev \
+  libaom-dev
 rm -r /var/lib/apt/lists/*
 
 cd
