@@ -1,12 +1,14 @@
 FROM ubuntu:24.04
 
-ARG FFMPEG_VERSION=7.0.2
-ENV FFMPEG_VERSION=${FFMPEG_VERSION}
-
-COPY setup.sh .
-
-RUN ./setup.sh
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common \
+    && add-apt-repository ppa:ubuntuhandbook1/ffmpeg7 \
+    && apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y ffmpeg \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt clean
 
 VOLUME /output
 WORKDIR /output
-ENTRYPOINT ["/usr/local/bin/ffmpeg"]
+
+ENTRYPOINT ["/usr/bin/ffmpeg"]
