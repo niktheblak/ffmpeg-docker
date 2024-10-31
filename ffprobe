@@ -3,8 +3,8 @@
 docker run \
   -it \
   --rm \
-  --privileged \
   -v "$(pwd):/output" \
+  --entrypoint /usr/bin/ffprobe \
   ffmpeg:latest \
   -hide_banner \
   "$@"
